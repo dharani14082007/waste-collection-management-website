@@ -1,0 +1,4 @@
+{% extends "base.html" %}
+{% block title %}Page error{% endblock %}
+{% block heading %}Unable to load this page{% endblock %}
+{% block content %}<section class="panel empty-state"><h2>Something went wrong</h2><p>Check that MySQL is running and the credentials in the existing project’s <code>python-analysis/.env</code> are correct. See the website terminal for details.</p><a class="button primary" href="{{ url_for('dashboard') }}">Try again</a></section>{% endblock %}

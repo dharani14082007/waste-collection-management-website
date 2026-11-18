@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit area' if item else 'Add area' }}{% endblock %}
+{% block heading %}{{ 'Edit area' if item else 'Add residential area' }}{% endblock %}
+{% block content %}<section class="panel form-panel"><p>Enter the service location details.</p><form method="post" class="form-grid">
+<label>Area name<input name="area_name" maxlength="100" required value="{{ request.form.get('area_name',item.area_name if item else '') }}"></label>
+<label>Zone<input name="zone" maxlength="50" required value="{{ request.form.get('zone',item.zone if item else '') }}"></label>
+<label>Population<input name="population" type="number" min="1" required value="{{ request.form.get('population',item.population if item else '') }}"></label>
+<label>Contact officer<input name="contact_officer" maxlength="100" required value="{{ request.form.get('contact_officer',item.contact_officer if item else '') }}"></label>
+<div class="form-actions"><a class="button" href="{{ url_for('areas') }}">Cancel</a><button class="button primary">Save area</button></div></form></section>{% endblock %}

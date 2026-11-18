@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}WasteWise{% endblock %} · Collection Management</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<aside class="sidebar">
+  <a class="brand" href="{{ url_for('dashboard') }}"><span class="logo">W</span><span>WasteWise<small>Municipal operations</small></span></a>
+  <p class="nav-caption">WORKSPACE</p>
+  <nav>
+    <a class="{{ 'active' if request.endpoint == 'dashboard' else '' }}" href="{{ url_for('dashboard') }}">▦ <span>Dashboard</span></a>
+    <a class="{{ 'active' if request.endpoint in ['areas','area_new','area_edit'] else '' }}" href="{{ url_for('areas') }}">⌂ <span>Service areas</span></a>
+    <a class="{{ 'active' if request.endpoint in ['vehicles','vehicle_new','vehicle_edit'] else '' }}" href="{{ url_for('vehicles') }}">▰ <span>Fleet</span></a>
+    <a class="{{ 'active' if request.endpoint in ['collections','collection_new'] else '' }}" href="{{ url_for('collections') }}">↻ <span>Collections</span></a>
+    <a class="{{ 'active' if request.endpoint == 'reports' else '' }}" href="{{ url_for('reports') }}">▤ <span>Reports</span></a>
+    <a class="{{ 'active' if request.endpoint == 'analytics' else '' }}" href="{{ url_for('analytics') }}">▥ <span>Analytics</span></a>
+  </nav>
+  <div class="sidebar-bottom"><span></span> Connected workspace</div>
+</aside>
+<main class="main">
+  <header class="topbar"><div><small>MUNICIPAL OPERATIONS</small><h1>{% block heading %}Dashboard{% endblock %}</h1></div><time>{{ today_label }}</time></header>
+  <div class="content">
+    {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}<div class="messages">{% for kind,message in messages %}<div class="alert {{ kind }}">{{ message }}</div>{% endfor %}</div>{% endif %}{% endwith %}
+    {% block content %}{% endblock %}
+    <footer>Waste Collection Management <span>·</span> Local operations dashboard</footer>
+  </div>
+</main>
+</body>
+</html>

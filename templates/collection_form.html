@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Schedule collection{% endblock %}
+{% block heading %}Schedule a collection{% endblock %}
+{% block content %}<section class="panel form-panel"><p>Create a pickup assignment. You can enter waste quantities when completing it.</p>
+{% if not areas %}<div class="alert error">Add an area before scheduling a collection.</div>{% else %}<form method="post" class="form-grid">
+<label>Service area<select name="area_id" required><option value="">Choose area</option>{% for a in areas %}<option value="{{ a.area_id }}">{{ a.area_name }}</option>{% endfor %}</select></label>
+<label>Scheduled date<input name="scheduled_date" type="date" min="{{ today }}" value="{{ today }}" required></label>
+<label class="wide">Active vehicle <small>(optional)</small><select name="vehicle_id"><option value="">Leave unassigned</option>{% for v in vehicles %}<option value="{{ v.vehicle_id }}">{{ v.registration_number }} — {{ "{:,.0f}".format(v.capacity_kg|float) }} kg</option>{% endfor %}</select></label>
+<div class="form-actions"><a class="button" href="{{ url_for('collections') }}">Cancel</a><button class="button primary">Create schedule</button></div></form>{% endif %}</section>{% endblock %}

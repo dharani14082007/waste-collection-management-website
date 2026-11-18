@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Fleet{% endblock %}
+{% block heading %}Fleet management{% endblock %}
+{% block content %}
+<div class="intro"><div><h2>Collection vehicles</h2><p>Track registrations, capacity, and operational status.</p></div><a class="button primary" href="{{ url_for('vehicle_new') }}">＋ Add vehicle</a></div>
+<section class="panel table-scroll"><table><thead><tr><th>Registration</th><th>Type</th><th>Capacity</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+{% for row in vehicles %}<tr><td class="strong">{{ row.registration_number }}</td><td>{{ row.vehicle_type }}</td><td>{{ "{:,.0f}".format(row.capacity_kg|float) }} kg</td><td><span class="tag">{{ row.status }}</span></td><td class="actions"><a class="button small" href="{{ url_for('vehicle_edit',item_id=row.vehicle_id) }}">Edit</a><form method="post" action="{{ url_for('vehicle_delete',item_id=row.vehicle_id) }}" onsubmit="return confirm('Delete this vehicle?')"><button class="button small danger">Delete</button></form></td></tr>
+{% else %}<tr><td colspan="5" class="empty">No vehicles found.</td></tr>{% endfor %}
+</tbody></table></section>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Collections{% endblock %}
+{% block heading %}Collection operations{% endblock %}
+{% block content %}
+<div class="intro"><div><h2>Collection schedule</h2><p>Schedule pickups and update their status.</p></div><a class="button primary" href="{{ url_for('collection_new') }}">＋ Schedule collection</a></div>
+<section class="panel table-scroll"><table><thead><tr><th>Area</th><th>Date</th><th>Vehicle</th><th>Status</th><th>Waste</th><th>Update status</th></tr></thead><tbody>
+{% for row in rows %}<tr><td class="strong">{{ row.area_name }}</td><td>{{ row.scheduled_date }}</td><td>{{ row.registration_number or 'Unassigned' }}</td><td><span class="tag">{{ row.status }}</span></td><td>{{ "{:,.1f}".format(row.total_weight_kg|float) }} kg</td><td class="actions">
+{% if row.status=='Scheduled' %}<form method="post" action="{{ url_for('collection_status',item_id=row.collection_id) }}"><input type="hidden" name="status" value="In Progress"><button class="button small">Start</button></form><form method="post" action="{{ url_for('collection_status',item_id=row.collection_id) }}" onsubmit="return confirm('Mark as missed?')"><input type="hidden" name="status" value="Missed"><button class="button small danger">Missed</button></form>
+{% elif row.status=='In Progress' %}<details><summary class="button small primary">Complete</summary><form class="quantity-box" method="post" action="{{ url_for('collection_status',item_id=row.collection_id) }}"><input type="hidden" name="status" value="Completed"><b>Waste quantity (kg)</b><label>Biodegradable<input type="number" name="category_1" min="0" step=".01" value="0"></label><label>Recyclable<input type="number" name="category_2" min="0" step=".01" value="0"></label><label>Non-recyclable<input type="number" name="category_3" min="0" step=".01" value="0"></label><button class="button primary small">Save completion</button></form></details>
+{% else %}—{% endif %}</td></tr>
+{% else %}<tr><td colspan="6" class="empty">No collections found.</td></tr>{% endfor %}
+</tbody></table></section>
+{% endblock %}

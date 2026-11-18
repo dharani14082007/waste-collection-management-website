@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Analytics{% endblock %}
+{% block heading %}Environmental analytics{% endblock %}
+{% block content %}
+<div class="intro"><div><h2>Waste insights</h2><p>Charts generated from the existing Python analytics pipeline.</p></div><form method="post" action="{{ url_for('refresh_analytics') }}"><button class="button primary">↻ Refresh charts</button></form></div>
+{% if charts %}<div class="analytics-grid">{% for chart in charts %}<article class="panel analytics-card"><a href="{{ url_for('chart_file',filename=chart) }}" target="_blank"><img src="{{ url_for('chart_file',filename=chart) }}" alt="{{ chart }}"></a><b>{{ chart|replace('chart','Chart ')|replace('_',' ')|replace('.png','')|title }}</b></article>{% endfor %}</div>{% else %}<section class="panel empty-state"><h2>No charts yet</h2><p>Refresh charts to run the existing Python analytics pipeline.</p><form method="post" action="{{ url_for('refresh_analytics') }}"><button class="button primary">Generate charts</button></form></section>{% endif %}
+{% endblock %}

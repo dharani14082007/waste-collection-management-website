@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Service areas{% endblock %}
+{% block heading %}Residential areas{% endblock %}
+{% block content %}
+<div class="intro"><div><h2>Service locations</h2><p>Manage areas, zones, population, and contacts.</p></div><a class="button primary" href="{{ url_for('area_new') }}">＋ Add area</a></div>
+<section class="panel table-scroll"><table><thead><tr><th>Area</th><th>Zone</th><th>Population</th><th>Contact officer</th><th>Actions</th></tr></thead><tbody>
+{% for row in areas %}<tr><td class="strong">{{ row.area_name }}</td><td><span class="tag">{{ row.zone }}</span></td><td>{{ "{:,}".format(row.population) }}</td><td>{{ row.contact_officer }}</td><td class="actions"><a class="button small" href="{{ url_for('area_edit',item_id=row.area_id) }}">Edit</a><form method="post" action="{{ url_for('area_delete',item_id=row.area_id) }}" onsubmit="return confirm('Delete this area?')"><button class="button small danger">Delete</button></form></td></tr>
+{% else %}<tr><td colspan="5" class="empty">No areas found.</td></tr>{% endfor %}
+</tbody></table></section>
+{% endblock %}

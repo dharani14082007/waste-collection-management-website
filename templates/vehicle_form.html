@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit vehicle' if item else 'Add vehicle' }}{% endblock %}
+{% block heading %}{{ 'Edit vehicle' if item else 'Register vehicle' }}{% endblock %}
+{% block content %}<section class="panel form-panel"><p>Enter vehicle details and operational status.</p><form method="post" class="form-grid">
+<label>Registration number<input name="registration_number" maxlength="20" required value="{{ request.form.get('registration_number',item.registration_number if item else '') }}"></label>
+<label>Vehicle type<input name="vehicle_type" maxlength="50" required value="{{ request.form.get('vehicle_type',item.vehicle_type if item else '') }}"></label>
+<label>Capacity (kg)<input name="capacity_kg" type="number" min="0.01" step="0.01" required value="{{ request.form.get('capacity_kg',item.capacity_kg if item else '') }}"></label>
+<label>Status<select name="status">{% for s in ['Active','Maintenance','Retired'] %}<option {% if request.form.get('status',item.status if item else 'Active')==s %}selected{% endif %}>{{ s }}</option>{% endfor %}</select></label>
+<div class="form-actions"><a class="button" href="{{ url_for('vehicles') }}">Cancel</a><button class="button primary">Save vehicle</button></div></form></section>{% endblock %}

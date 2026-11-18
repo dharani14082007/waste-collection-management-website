@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block heading %}Operations dashboard{% endblock %}
+{% block content %}
+<div class="intro"><div><h2>Waste collection at a glance</h2><p>Live summary from your shared MySQL database.</p></div><a class="button primary" href="{{ url_for('collection_new') }}">＋ Schedule collection</a></div>
+<section class="metrics">
+  <article><span class="metric-icon green">⌂</span><small>Residential areas</small><strong>{{ totals.areas }}</strong><p>Service locations</p></article>
+  <article><span class="metric-icon blue">▰</span><small>Fleet vehicles</small><strong>{{ totals.vehicles }}</strong><p>Registered fleet</p></article>
+  <article><span class="metric-icon amber">↻</span><small>Total collections</small><strong>{{ totals.collections }}</strong><p>All recorded pickups</p></article>
+  <article><span class="metric-icon purple">♻</span><small>Waste collected</small><strong>{{ "{:,.0f}".format(totals.waste_kg|float) }} <i>kg</i></strong><p>Completed pickups</p></article>
+</section>
+<div class="columns">
+  <section class="panel"><div class="panel-title"><div><h3>Collection status</h3><p>Current workload</p></div><a href="{{ url_for('collections') }}">View all →</a></div>
+    {% for row in statuses %}<div class="status-row"><span class="dot {{ row.status|lower|replace(' ','-') }}"></span>{{ row.status }}<b>{{ row.count }}</b></div>{% else %}<p class="empty">No collections recorded.</p>{% endfor %}
+  </section>
+  <section class="panel"><div class="panel-title"><div><h3>Top service areas</h3><p>Ranked by completed waste</p></div><a href="{{ url_for('reports') }}">Reports →</a></div>
+    <div class="table-scroll"><table><thead><tr><th>Residential area</th><th>Completed</th><th>Waste</th></tr></thead><tbody>{% for row in top_areas %}<tr><td class="strong">{{ row.area_name }}</td><td>{{ row.completed_collections or 0 }}</td><td>{{ "{:,.0f}".format(row.total_waste_kg|float) }} kg</td></tr>{% else %}<tr><td colspan="3" class="empty">No area data.</td></tr>{% endfor %}</tbody></table></div>
+  </section>
+</div>
+<section class="panel"><div class="panel-title"><div><h3>Environmental analytics</h3><p>Charts produced by the existing Python analysis</p></div><a href="{{ url_for('analytics') }}">View all charts →</a></div>
+  {% if charts %}<div class="chart-strip">{% for chart in charts[:4] %}<a href="{{ url_for('analytics') }}"><img src="{{ url_for('chart_file',filename=chart) }}" alt="{{ chart }}"><span>{{ chart|replace('chart','Chart ')|replace('_',' ')|replace('.png','')|title }}</span></a>{% endfor %}</div>{% else %}<p class="empty">No charts generated yet. Open Analytics to generate them.</p>{% endif %}
+</section>
+{% endblock %}
